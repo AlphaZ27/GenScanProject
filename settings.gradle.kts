@@ -22,6 +22,12 @@ dependencyResolutionManagement {
 rootProject.name = "GenScanProject"
 include(":app")
 include(":app:core")
-include(":app:scanner")
-include(":app:generator")
+include(":app:feature_scanner")
+include(":app:feature_generator")
 include(":app:history")
+include(":app:feature_auth")
+include(":app:feature_profile")
+include(":app:feature_admin")
+
+include(":qrcodecomposelib")
+include(":qrcodecomposelibmlkit")

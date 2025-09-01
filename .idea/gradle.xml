@@ -11,9 +11,14 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/app/core" />
-            <option value="$PROJECT_DIR$/app/generator" />
+            <option value="$PROJECT_DIR$/app/feature_admin" />
+            <option value="$PROJECT_DIR$/app/feature_auth" />
+            <option value="$PROJECT_DIR$/app/feature_generator" />
+            <option value="$PROJECT_DIR$/app/feature_profile" />
+            <option value="$PROJECT_DIR$/app/feature_scanner" />
             <option value="$PROJECT_DIR$/app/history" />
-            <option value="$PROJECT_DIR$/app/scanner" />
+            <option value="$PROJECT_DIR$/qrcodecomposelib" />
+            <option value="$PROJECT_DIR$/qrcodecomposelibmlkit" />
           </set>
         </option>
       </GradleProjectSettings>

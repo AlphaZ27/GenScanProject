@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
@@ -9,11 +9,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.history"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,8 +39,8 @@ dependencies {
 
     //Adding Module Dependencies
     implementation(project(":app:core"))
-    implementation(project(":app:generator"))
-    implementation(project(":app:scanner"))
+    implementation(project(":app:feature_generator"))
+    implementation(project(":app:feature_scanner"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

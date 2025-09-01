@@ -2,7 +2,7 @@ package com.example.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.data.FirestoreRepository
+import com.example.core.data.repository.FirestoreRepository
 import com.example.core.data.models.ScanResult
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    //id("com.google.gms:google-services:4.4.3")
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlinter)
 }
 
 android {
@@ -38,10 +39,25 @@ android {
     buildFeatures {
         compose = true
     }
+    kotlinter {
+        ignoreFailures = false
+        reporters = arrayOf("plain")
+    }
 }
 
 dependencies {
 
+    //Project Module Dependencies
+    implementation(project(":app:core"))
+    implementation(project(":app:feature_auth"))
+    implementation(project(":app:feature_admin"))
+    //implementation(project(":app:feature_user"))
+    //implementation(project(":app:feature_scanner"))
+    implementation(project(":app:feature_profile"))
+    implementation(project(":qrcodecomposelib"))
+    implementation(project(":qrcodecomposelibmlkit"))
+
+    //Androidx and Compose
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -50,6 +66,17 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    //Navigation
+    //implementation(libs.androidx.navigation.compose)
+    //implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    //Firestore
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    //implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

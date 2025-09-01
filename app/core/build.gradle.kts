@@ -1,8 +1,7 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -10,12 +9,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.core"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,9 +36,9 @@ android {
 
 dependencies {
 
+    implementation(project(":app:feature_generator"))
+    implementation(project(":app:feature_scanner"))
     //Adding Module Dependencies
-    implementation(project(":app:generator"))
-    implementation(project(":app:scanner"))
     implementation(project(":app:history"))
 
     implementation(libs.androidx.core.ktx)
@@ -55,7 +49,17 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    //Firestore
     implementation(libs.firebase.firestore)
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation("com.google.firebase:firebase-common-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    //implementation(libs.firebase.auth.ktx)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
