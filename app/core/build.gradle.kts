@@ -36,8 +36,8 @@ android {
 
 dependencies {
 
-    implementation(project(":app:feature_generator"))
-    implementation(project(":app:feature_scanner"))
+    //implementation(project(":app:feature_generator"))
+    //implementation(project(":app:feature_scanner"))
     //Adding Module Dependencies
     implementation(project(":app:history"))
 

@@ -28,6 +28,6 @@ include(":app:history")
 include(":app:feature_auth")
 include(":app:feature_profile")
 include(":app:feature_admin")
-
+//QR code library
 include(":qrcodecomposelib")
 include(":qrcodecomposelibmlkit")

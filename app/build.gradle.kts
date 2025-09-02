@@ -74,6 +74,10 @@ dependencies {
     //Firestore
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
     implementation("com.google.firebase:firebase-analytics")
+    //Firebase Common library
+    implementation("com.google.firebase:firebase-common-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
     //implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
 
