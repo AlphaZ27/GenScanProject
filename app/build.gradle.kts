@@ -71,13 +71,13 @@ dependencies {
     //implementation(libs.androidx.navigation.compose)
     //implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    //Firestore
+    //Firestore - Remember to put the dependency versions or they won't work
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-analytics:23.0.0")
     //Firebase Common library
-    implementation("com.google.firebase:firebase-common-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-common-ktx:21.0.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.4")
+    implementation("com.google.firebase:firebase-auth-ktx:23.2.1")
     //implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
 
