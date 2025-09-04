@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.kotlinter)
+    alias(libs.plugins.hilt) // Added Hilt plugin
+    kotlin("kapt")           // Added Kapt for Hilt
 }
 
 android {
@@ -33,8 +35,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+//    kotlinOptions { // no long works
+//        jvmTarget = "11"
+//    }
+    kotlin {
+        jvmToolchain(11) // This is the modern way
     }
     buildFeatures {
         compose = true
@@ -48,14 +53,18 @@ android {
 dependencies {
 
     //Project Module Dependencies
-    implementation(project(":app:core"))
     implementation(project(":app:feature_auth"))
     implementation(project(":app:feature_admin"))
-    //implementation(project(":app:feature_user"))
-    //implementation(project(":app:feature_scanner"))
+    implementation(project(":app:feature_scanner"))
+    implementation(project(":app:feature_generator"))
     implementation(project(":app:feature_profile"))
     implementation(project(":qrcodecomposelib"))
     implementation(project(":qrcodecomposelibmlkit"))
+    //UI and Business logic modules
+    implementation(project(":app:common"))
+    implementation(project(":app:domain"))
+    implementation(project(":app:data"))
+    implementation(project(":app:di"))
 
     //Androidx and Compose
     implementation(libs.androidx.core.ktx)
@@ -67,19 +76,22 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Hilt Dependencies
+    implementation(libs.hilt.android) // Added Hilt runtime
+    kapt(libs.hilt.compiler)          // Added Hilt compiler
+
     //Navigation
     //implementation(libs.androidx.navigation.compose)
     //implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     //Firestore - Remember to put the dependency versions or they won't work
-    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
-    implementation("com.google.firebase:firebase-analytics:23.0.0")
+    //implementation(libs.firebase.bom)
+    //implementation(libs.firebase.analytics)
     //Firebase Common library
-    implementation("com.google.firebase:firebase-common-ktx:21.0.0")
-    implementation("com.google.firebase:firebase-firestore-ktx:25.1.4")
-    implementation("com.google.firebase:firebase-auth-ktx:23.2.1")
-    //implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore)
+    //implementation(libs.firebase.common.ktx)
+    //implementation(libs.firebase.firestore.ktx)
+    //implementation(libs.firebase.auth.ktx)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

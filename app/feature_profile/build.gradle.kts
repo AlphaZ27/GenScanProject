@@ -34,6 +34,10 @@ android {
 
 dependencies {
 
+    //UI and Business logic modules
+    implementation(project(":app:common"))
+    implementation(project(":app:domain"))
+
     //implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -1,0 +1,24 @@
+package com.example.domain.model
+
+import java.util.Date
+
+/**
+ * Represents a user in the application. This is a pure data class with no
+ * platform-specific dependencies.
+ *
+ * @property uid The unique identifier who owns this QR code.
+ *  @property building The building string content from the QR code.
+ * @property location The location string content from the QR code.
+ * @property bag The bag string content from the QR code.
+ * @property type The type of QR code (e.g., "Scanned", "Generated").
+ * @property timestamp The date and time when the QR code was created.
+ */
+
+data class QrCode(
+    val uid: String = "", // User ID who owns the QR code
+    val building: String = "",
+    val location: String = "",
+    val bag: String = "",
+    val type: String = "",
+    val timestamp: Date? = null
+)

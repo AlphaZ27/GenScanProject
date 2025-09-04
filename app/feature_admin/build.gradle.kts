@@ -27,14 +27,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        jvmToolchain(11) // This is the modern way
     }
 }
 
 dependencies {
 
-    implementation(project(":app:core"))
+    //UI and Business logic modules
+    implementation(project(":app:common"))
+    implementation(project(":app:domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

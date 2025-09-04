@@ -37,10 +37,9 @@ android {
 
 dependencies {
 
-    //Adding Module Dependencies
-    implementation(project(":app:core"))
-    implementation(project(":app:feature_scanner"))
-    implementation(project(":app:history"))
+    //UI and Business logic modules
+    implementation(project(":app:common"))
+    implementation(project(":app:domain"))
     implementation(project(":qrcodecomposelib"))
 
     implementation(libs.androidx.core.ktx)

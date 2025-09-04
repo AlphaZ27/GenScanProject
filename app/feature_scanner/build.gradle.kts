@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    id("kotlin-kapt")
 }
 
 android {
@@ -33,15 +35,23 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
+    }
 }
 
 dependencies {
 
-    // Adding Module Dependencies
-    implementation(project(":app:core"))
-    implementation(project(":app:feature_generator"))
-    implementation(project(":app:history"))
+    //UI and Business logic modules
+    implementation(project(":app:common"))
+    implementation(project(":app:domain"))
+    implementation(project(":app:di"))
+
     implementation(project(":qrcodecomposelib"))
+
+    //Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

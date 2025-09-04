@@ -11,6 +11,9 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -20,14 +23,19 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "GenScanProject"
+//Core Layers
 include(":app")
-include(":app:core")
+include(":app:common") //Shared UI components, resources, utilities
+include(":app:data")    //Data layer - repositories, local/remote data sources
+include(":app:domain")  //Domain layer - business logic, entities, use cases
+include(":app:di")      //All Hilt dependencies - clean and centralised graph
+//Feature Modules
 include(":app:feature_scanner")
 include(":app:feature_generator")
 include(":app:history")
 include(":app:feature_auth")
 include(":app:feature_profile")
 include(":app:feature_admin")
-//QR code library
+//External QR code library
 include(":qrcodecomposelib")
 include(":qrcodecomposelibmlkit")

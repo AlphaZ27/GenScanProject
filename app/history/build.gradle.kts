@@ -37,8 +37,10 @@ android {
 
 dependencies {
 
+    //UI and Business logic modules
+    implementation(project(":app:common"))
+    implementation(project(":app:domain"))
     //Adding Module Dependencies
-    implementation(project(":app:core"))
     implementation(project(":app:feature_generator"))
     implementation(project(":app:feature_scanner"))
 
