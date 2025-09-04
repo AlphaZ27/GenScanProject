@@ -2,19 +2,23 @@ package com.example.data.repository
 
 import com.example.domain.model.User
 import com.example.domain.repository.AuthRepository
+import com.example.domain.util.Result
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await // Added import for .await()
 import javax.inject.Inject
 
 
 class AuthRepositoryImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth // Injected FirebaseAuth
+    private val firebaseAuth: FirebaseAuth, // Injected FirebaseAuth
+    private val firestore: FirebaseFirestore // Injected FirebaseFirestore
 ) : AuthRepository {
 
 
     override fun getCurrentUser(): User? {
-        return firebaseAuth.currentUser?.toDomainUser()
+        return auth.currentUser
+    //return firebaseAuth.currentUser?.toDomainUser()
     }
 
     override suspend fun login(email: String, password: String): Result<User> {
@@ -27,6 +31,31 @@ class AuthRepositoryImpl @Inject constructor(
 
         }
     }
+
+    override suspend fun registerUser(email: String, password: String): Result<User> {
+        return try {
+            val userCredential = auth.createUserWithEmailAndPassword(email, password).await()
+            val firebaseUser = userCredential.user
+            if (firebaseUser != null) {
+                // Create a user document in Firestore
+                val user = User(
+                    uid = firebaseUser.uid,
+                    email = firebaseUser.email ?: "",
+                    role = "user",
+                    status = "pending"
+                )
+                firestore.collection("users").document(firebaseUser.uid).set(user).await()
+                Result.Success(Unit)
+            } else {
+                Result.Error("User registration failed: user object is null.")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "An unknown registration error occurred.")
+        }
+    }
+
+    //registerUser should call createUserWithEmailAndPassword on the firebaseAuth instance
+    // upon successful auth creation, it must also create a new user document in the database with uid, email, role of "user" and status of "pending"
 
     override suspend fun signup(name: String, email: String, password: String): Result<User> {
         // Similar logic for signup, map FirebaseUser to domain User upon success
@@ -51,6 +80,14 @@ class AuthRepositoryImpl @Inject constructor(
         firebaseAuth.signOut()
     }
 
+    //Add GetPendingUsers function here
+
+    //Add ApprovePendingUser function here
+    // Screen should display a list of users where status == "pending"
+    // Each user item should have an Approve button and a Delete button that trigger the respective use cases
+
+    //Add DeleteUser function here
+
 }
 
 // Helper extension function to map FirebaseUser to your domain User
@@ -60,7 +97,6 @@ fun FirebaseUser.toDomainUser(): User {
     return User(
         uid = "String",
         email = "String",
-
          role = "user", // Only include if your domain.model.User has 'role'
          status = "pending" // Only include if your domain.model.User has 'status'
     )

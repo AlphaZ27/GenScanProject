@@ -2,10 +2,11 @@ package com.example.feature_profile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.core.data.repository.AuthRepository
-import com.core.data.repository.UserRepository
-import com.core.domain.model.User
-import com.core.util.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.domain.repository.AuthRepository
+import com.example.domain.repository.UserRepository
+import com.example.domain.model.User
+import com.example.domain.util.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -16,6 +17,7 @@ sealed class ProfileState {
     object Loading : ProfileState()
 }
 
+@HiltViewModel
 class ProfileViewModel(
     private val authRepository: AuthRepository = AuthRepository(),
     private val userRepository: UserRepository = UserRepository()

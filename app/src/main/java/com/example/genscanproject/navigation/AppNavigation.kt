@@ -3,19 +3,26 @@ package com.example.genscanproject.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.genscanproject.feature_auth.presentation.LoginScreen
-import com.example.genscanproject.feature_profile.presentation.ProfileScreen
+import androidx.lifecycle.viewmodel.compose.viewModel // Stays, but needs Gradle dep
+import androidx.navigation.compose.NavHost // Stays, but needs Gradle dep
+import androidx.navigation.compose.composable // Stays, but needs Gradle dep
+import androidx.navigation.compose.rememberNavController // Stays, but needs Gradle dep
+import com.example.feature_auth.presentation.LoginScreen
+import com.example.feature_auth.presentation.RegistrationScreen
+import com.example.feature_profile.presentation.ProfileScreen
 import com.example.genscanproject.presentation.PendingApprovalScreen
 import com.example.genscanproject.presentation.SplashScreen
+import com.example.scanner.presentation.ScannerScreen
+import com.example.generator.presentation.GeneratorScreen
+// Added imports for the classes we created:
+import com.example.genscanproject.presentation.MainViewModel
+import com.example.genscanproject.presentation.UserAuthState
 
 // Defines the routes for navigation
 object AppRoutes {
     const val SPLASH = "splash"
     const val LOGIN = "login"
+    const val REGISTRATION = "registration"
     const val PROFILE = "profile"
     const val ADMIN_DASHBOARD = "admin_dashboard"
     const val PENDING_APPROVAL = "pending_approval"
@@ -24,86 +31,83 @@ object AppRoutes {
 }
 
 @Composable
-fun AppNavigation(mainViewModel: MainViewModel = viewModel()) {
+fun AppNavigation(mainViewModel: MainViewModel = viewModel()) { // MainViewModel should now be resolved
     val navController = rememberNavController()
-    val authState by mainViewModel.authState.collectAsState()
+    val authState by mainViewModel.authState.collectAsState() // authState & mainViewModel should be fine
 
-    // The NavHost defines the navigation graph
     NavHost(navController = navController, startDestination = AppRoutes.SPLASH) {
-        // Splash screen shown while checking auth state
         composable(AppRoutes.SPLASH) {
             SplashScreen()
         }
 
-        // Login screen for unauthenticated users
         composable(AppRoutes.LOGIN) {
-            LoginScreen(onLoginSuccess = {
-                // After login, navigate to the correct screen based on the updated auth state
-                // This assumes the authState will be refreshed by the viewModel
-                // A better approach might be to have the login success return the user role.
-                // For simplicity, we'll re-evaluate here.
-                val latestState = mainViewModel.authState.value
-                if (latestState is UserAuthState.Authenticated) {
-                    val user = latestState.user
-                    val route = when {
-                        user.role == "admin" -> AppRoutes.ADMIN_DASHBOARD
-                        user.status == "approved" -> AppRoutes.PROFILE
-                        else -> AppRoutes.PENDING_APPROVAL
+            LoginScreen(
+                onLoginSuccess = {
+                    val latestState = mainViewModel.authState.value
+                    if (latestState is UserAuthState.Authenticated) { // UserAuthState should be resolved
+                        val user = latestState.user // user.role and user.status will depend on your com.example.domain.model.User
+                        val route = when {
+                            user.role == "admin" -> AppRoutes.ADMIN_DASHBOARD
+                            user.status == "approved" -> AppRoutes.PROFILE
+                            else -> AppRoutes.PENDING_APPROVAL
+                        }
+                        navController.navigate(route) {
+                            popUpTo(AppRoutes.LOGIN) { inclusive = true }
+                        }
                     }
-                    navController.navigate(route) {
-                        popUpTo(AppRoutes.LOGIN) { inclusive = true }
-                    }
+                },
+                onNavigateToRegistration = {
+                    navController.navigate(AppRoutes.REGISTRATION)
                 }
-            })
+            )
         }
 
-        // Profile screen for approved, non-admin users
         composable(AppRoutes.PROFILE) {
             ProfileScreen(
                 onLogout = {
-                mainViewModel.logout()
-                navController.navigate(AppRoutes.LOGIN) {
-                    popUpTo(AppRoutes.PROFILE) { inclusive = true }
-                }
-            },
-                arrayOf<>(navController.navigate(AppRoutes.SCANNER)).also {
-                    onNavigateToScanner = it
+                    mainViewModel.logout() // logout should be resolved
+                    navController.navigate(AppRoutes.LOGIN) {
+                        popUpTo(AppRoutes.PROFILE) { inclusive = true }
+                    }
                 },
-                var onNavigateToGenerator : kotlin.Any = kotlin.arrayOf <> (navController.navigate(
-                AppRoutes.GENERATOR
-                    /*
-                    *  onNavigateToScanner = { navController.navigate(AppRoutes.SCANNER) },
-                    onNavigateToGenerator = { navController.navigate(AppRoutes.GENERATOR) } */
-            ))
-
+                onNavigateToScanner = { navController.navigate(AppRoutes.SCANNER) },
+                onNavigateToGenerator = { navController.navigate(AppRoutes.GENERATOR) }
+            )
         }
 
-        // Generator screen for users who want to generate QR codes
         composable(AppRoutes.GENERATOR) {
             GeneratorScreen()
         }
-        // Scanner screen for users who want to scan QR codes
         composable(AppRoutes.SCANNER) {
             ScannerScreen()
         }
 
-
-        // Admin dashboard for admin users
         composable(AppRoutes.ADMIN_DASHBOARD) {
-            // AdminDashboardScreen()
-            // For now, let's add a placeholder with logout
-            ProfileScreen(onLogout = { // Replace with AdminDashboardScreen when ready
-                mainViewModel.logout()
-                navController.navigate(AppRoutes.LOGIN) {
-                    popUpTo(AppRoutes.ADMIN_DASHBOARD) { inclusive = true }
+            // Updated ProfileScreen call for admin
+            ProfileScreen(
+                onLogout = {
+                    mainViewModel.logout()
+                    navController.navigate(AppRoutes.LOGIN) {
+                        popUpTo(AppRoutes.ADMIN_DASHBOARD) { inclusive = true }
+                    }
+                },
+                // Admins can also navigate to scanner/generator
+                onNavigateToScanner = { navController.navigate(AppRoutes.SCANNER) },
+                onNavigateToGenerator = { navController.navigate(AppRoutes.GENERATOR) }
+            )
+        }
+
+        composable(AppRoutes.REGISTRATION) {
+            RegistrationScreen(onRegistrationSuccess = {
+                navController.navigate(AppRoutes.PENDING_APPROVAL) {
+                    popUpTo(AppRoutes.LOGIN) { inclusive = true }
                 }
             })
         }
 
-        // Screen for users awaiting approval
         composable(AppRoutes.PENDING_APPROVAL) {
             PendingApprovalScreen(onLogout = {
-                mainViewModel.logout()
+                mainViewModel.logout() // Added logout here for consistency
                 navController.navigate(AppRoutes.LOGIN) {
                     popUpTo(AppRoutes.PENDING_APPROVAL) { inclusive = true }
                 }
@@ -111,9 +115,7 @@ fun AppNavigation(mainViewModel: MainViewModel = viewModel()) {
         }
     }
 
-    // This block observes the auth state and performs the initial navigation
-    // from the splash screen.
-    when (val state = authState) {
+    when (val state = authState) { // authState & UserAuthState should be fine
         is UserAuthState.Authenticated -> {
             val startRoute = when {
                 state.user.role == "admin" -> AppRoutes.ADMIN_DASHBOARD
@@ -130,11 +132,10 @@ fun AppNavigation(mainViewModel: MainViewModel = viewModel()) {
             }
         }
         is UserAuthState.Loading -> {
-            // Do nothing, stay on splash
+            // Splash screen is shown
         }
         is UserAuthState.AuthError -> {
-            // Can navigate to login or show an error
-            navController.navigate(AppRoutes.LOGIN) {
+            navController.navigate(AppRoutes.LOGIN) { // Or show error on splash
                 popUpTo(AppRoutes.SPLASH) { inclusive = true }
             }
         }

@@ -1,10 +1,9 @@
 package com.example.di
 
+import com.example.domain.repository.AdminRepository
 import com.example.domain.repository.AuthRepository
 import com.example.domain.repository.QrCodeRepository
-import com.example.domain.usecase.GetQrCodesUseCase
-import com.example.domain.usecase.SaveQrCodeUseCase
-import com.example.domain.usecase.GetCurrentUserUseCase
+import com.example.domain.usecase.*  // Import all use cases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,6 +28,24 @@ object DomainModule {
         return GetCurrentUserUseCase(repository)
     }
 
+    @Provides
+    fun provideRegisterUserUseCase(repository: AuthRepository): RegisterUserUseCase {
+        return RegisterUserUseCase(repository)
+    }
 
-    //Other use cases
+    @Provides
+    fun provideGetPendingUsersUseCase(repository: AdminRepository): GetPendingUsersUseCase {
+        return GetPendingUsersUseCase(repository)
+    }
+
+    @Provides
+    fun provideApprovePendingUserUseCase(repository: AdminRepository): ApprovePendingUserUseCase {
+        return ApprovePendingUserUseCase(repository)
+    }
+
+    @Provides
+    fun provideDeleteUserUseCase(repository: AdminRepository): DeleteUserUseCase {
+        return DeleteUserUseCase(repository)
+    }
+
 }

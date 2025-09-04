@@ -1,5 +1,7 @@
 package com.example.di
 
+import com.example.data.repository.AdminRepositoryImpl
+import com.example.domain.repository.AdminRepository
 import com.example.data.repository.QrCodeRepositoryImpl
 import com.example.domain.repository.QrCodeRepository
 import com.example.data.repository.AuthRepositoryImpl
@@ -27,4 +29,16 @@ abstract class DataModule {
     abstract fun bindAuthRepository(
         authRepositoryImpl: AuthRepositoryImpl
     ): AuthRepository
+
+//    @Binds
+//    @Singleton
+//    abstract fun bindAdminRepository(
+//        adminRepositoryImpl: AdminRepositoryImpl
+//    ): AdminRepository
+
+    @Binds
+    abstract fun bindAdminRepository(
+        impl: AdminRepositoryImpl
+    ): AdminRepository
+
 }

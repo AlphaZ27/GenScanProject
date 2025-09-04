@@ -7,10 +7,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.feature_auth.AuthState
+import com.example.feature_auth.AuthViewModel
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
+    onNavigateToRegistration: () -> Unit, // Added this parameter
     viewModel: AuthViewModel = viewModel()
 ) {
     val state by viewModel.authState.collectAsState()
@@ -47,7 +50,11 @@ fun LoginScreen(
                 Text("Login")
             }
 
-            // You can add a sign-up button here
+            // Add a sign-up button here
+            Button(onClick = onNavigateToRegistration) { // Used the new parameter here
+                Text("Sign Up")
+            }
+
         }
     }
 }

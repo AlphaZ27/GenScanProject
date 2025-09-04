@@ -2,54 +2,63 @@ package com.example.feature_admin.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.core.data.repository.AdminRepository
-import com.core.domain.model.User
-import com.core.util.Result
+import com.example.domain.model.User
+import com.example.domain.usecase.ApprovePendingUserUseCase
+import com.example.domain.usecase.DeleteUserUseCase
+import com.example.domain.usecase.GetPendingUsersUseCase
+import com.example.domain.util.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed class AdminState {
-    data class Success(val users: List<User>) : AdminState()
+    data class Success(val pendingUsers: List<User>) : AdminState()
     data class Error(val message: String) : AdminState()
     object Loading : AdminState()
 }
 
-class AdminViewModel(
-    private val adminRepository: AdminRepository = AdminRepository() // Use DI
+@HiltViewModel
+class AdminViewModel @Inject constructor (
+    private val getPendingUsersUseCase: GetPendingUsersUseCase,
+    private val approvePendingUserUseCase: ApprovePendingUserUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase
 ) : ViewModel() {
 
-    private val _adminState = MutableStateFlow<AdminState>(AdminState.Loading)
-    val adminState = _adminState.asStateFlow()
+    private val _state = MutableStateFlow<AdminState>(AdminState.Loading)
+    val state = _state.asStateFlow()
 
     init {
-        fetchAllUsers()
+        loadPendingUsers()
     }
 
-    private fun fetchAllUsers() {
-        viewModelScope.launch {
-            _adminState.value = AdminState.Loading
-            adminRepository.getAllUsers().collect { result ->
-                when (result) {
-                    is Result.Success -> _adminState.value = AdminState.Success(result.data)
-                    is Result.Error -> _adminState.value = AdminState.Error(result.message)
-                    is Result.Loading -> _adminState.value = AdminState.Loading
-                }
+    private fun loadPendingUsers() {
+        // Explicitly typing 'result' and assuming getPendingUsersUseCase() returns Flow<Result<List<User>>>
+        getPendingUsersUseCase().onEach { result: Result<List<User>> ->
+            _state.value = when (result) {
+                // Changed from Result.Success<*> to Result.Success
+                // With result explicitly typed as Result<List<User>>, 
+                // smart cast should correctly infer result.data as List<User>
+                is Result.Success -> AdminState.Success(result.data)
+                is Result.Error -> AdminState.Error(result.message)
+                is Result.Loading -> AdminState.Loading
+                // Removed redundant 'else' branch
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun approveUser(uid: String) {
         viewModelScope.launch {
-            adminRepository.updateUserStatus(uid, "approved")
-            // The listener in fetchAllUsers will automatically refresh the list
+            approvePendingUserUseCase(uid)
         }
     }
 
     fun deleteUser(uid: String) {
         viewModelScope.launch {
-            adminRepository.deleteUser(uid)
-            // The listener in fetchAllUsers will automatically refresh the list
+            deleteUserUseCase(uid)
         }
     }
 }

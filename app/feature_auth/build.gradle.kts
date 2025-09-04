@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
+    id("kotlin-kapt")
 }
 
 android {
@@ -33,9 +35,15 @@ android {
 }
 
 dependencies {
+
     //UI and Business logic modules
     implementation(project(":app:common"))
     implementation(project(":app:domain"))
+    implementation(project(":app:di"))
+
+    //Hilt dependency injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     //implementation(libs.androidx.navigation.compose)
     //implementation(libs.androidx.lifecycle.viewmodel.compose)

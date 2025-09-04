@@ -81,8 +81,13 @@ dependencies {
     kapt(libs.hilt.compiler)          // Added Hilt compiler
 
     //Navigation
-    //implementation(libs.androidx.navigation.compose)
-    //implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // Jetpack Compose Navigation
+    implementation("androidx.navigation:navigation-compose:2.9.3") // Or the latest version
+    // ViewModel with Compose
+    implementation(libs.androidx.lifecycle.viewmodel.compose) // Or the latest version
+
+
+
 
     //Firestore - Remember to put the dependency versions or they won't work
     //implementation(libs.firebase.bom)
