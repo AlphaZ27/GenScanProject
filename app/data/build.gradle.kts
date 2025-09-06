@@ -46,7 +46,7 @@ dependencies {
 
     //firestore
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.firestore.ktx)
+    implementation("com.google.firebase:firebase-firestore-ktx") // Changed to direct string
     implementation(libs.firebase.auth.ktx)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.play.services)

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1047805470595",
+    "project_id": "genscan-7cb97",
+    "storage_bucket": "genscan-7cb97.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047805470595:android:ef9daf386f122a23f578b6",
+        "android_client_info": {
+          "package_name": "com.example.core"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf-kYd4-Z0ZLnaVcoXPUzw08Zn1dCUPo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047805470595:android:49cd979bae80e68af578b6",
+        "android_client_info": {
+          "package_name": "com.example.genscanproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf-kYd4-Z0ZLnaVcoXPUzw08Zn1dCUPo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

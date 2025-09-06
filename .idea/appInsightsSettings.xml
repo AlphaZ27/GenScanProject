@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.genscanproject" />
+                  <option name="mobileSdkAppId" value="1:1047805470595:android:49cd979bae80e68af578b6" />
+                  <option name="projectId" value="genscan-7cb97" />
+                  <option name="projectNumber" value="1047805470595" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

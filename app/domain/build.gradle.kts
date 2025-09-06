@@ -35,6 +35,12 @@ kotlin {
 
 dependencies {
     //Must remain completely independent of the all other modules
+    implementation("javax.inject:javax.inject:1") // Added for @Inject
+
+    //Firebase Auth
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

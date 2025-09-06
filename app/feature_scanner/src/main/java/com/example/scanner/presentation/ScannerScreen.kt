@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-
+import androidx.hilt.navigation.compose.hiltViewModel
 import android.Manifest
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
@@ -26,12 +26,12 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.pedro.qrcode.QrCodeAnalyzer
-import com.example.core.domain.model.QrCode
+import com.example.domain.model.QrCode
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+@OptIn(/*ExperimentalPermissionsApi::class,*/ ExperimentalMaterial3Api::class)
 @Composable
 fun ScannerScreen(
-    viewModel: ScannerViewModel = viewModel()
+    viewModel: ScannerViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
@@ -65,8 +65,16 @@ fun ScannerScreen(
             }
 
             // --- HISTORY VIEW ---
-            Column(modifier = Modifier.weight(1f).padding(16.dp)) {
-                Text("History", style = MaterialTheme.typography.headlineSmall)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "History",
+                    style = MaterialTheme.typography.headlineSmall
+                )
+
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // This 'when' block is how the UI handles the different states.
@@ -74,7 +82,7 @@ fun ScannerScreen(
                     is ScannerState.Loading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                     is ScannerState.Success -> {
                         if (historyState.qrCodes.isEmpty()) {
-                            Text("No QR codes saved yet.")
+                            Text("No QR codes saved yet.", style = MaterialTheme.typography.bodyMedium)
                         } else {
                             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 items(historyState.qrCodes) { qrCode ->
@@ -99,9 +107,16 @@ fun QrCodeHistoryItem(qrCode: QrCode) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(Modifier.weight(1f)) {
-                Text(qrCode.value, style = MaterialTheme.typography.bodyLarge)
-                Text(qrCode.type.replaceFirstChar { it.uppercase() }, style = MaterialTheme.typography.bodySmall)
+            Column(Modifier.weight(1f))
+            {
+                Text(
+                    qrCode.value,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = qrCode.type.replaceFirstChar { it.uppercase() },
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
             Text(
                 text = qrCode.timestamp?.let { java.text.SimpleDateFormat.getDateTimeInstance().format(it) } ?: "",

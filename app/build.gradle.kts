@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.genscanproject"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":app:feature_scanner"))
     implementation(project(":app:feature_generator"))
     implementation(project(":app:feature_profile"))
+    implementation(project(":app:history"))
     implementation(project(":qrcodecomposelib"))
     implementation(project(":qrcodecomposelibmlkit"))
     //UI and Business logic modules
@@ -82,7 +83,7 @@ dependencies {
 
     //Navigation
     // Jetpack Compose Navigation
-    implementation("androidx.navigation:navigation-compose:2.9.3") // Or the latest version
+    implementation("androidx.navigation:navigation-compose:2.7.7") // Or the latest version
     // ViewModel with Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose) // Or the latest version
 

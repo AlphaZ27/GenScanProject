@@ -2,42 +2,38 @@ package com.example.data.repository
 
 import com.example.domain.model.User
 import com.example.domain.repository.AuthRepository
-import com.example.domain.util.Result
+// com.example.domain.util.Result import is no longer needed as we're using kotlin.Result
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await // Added import for .await()
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-
 class AuthRepositoryImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth, // Injected FirebaseAuth
-    private val firestore: FirebaseFirestore // Injected FirebaseFirestore
+    private val firebaseAuth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
 ) : AuthRepository {
 
-
     override fun getCurrentUser(): User? {
-        return auth.currentUser
-    //return firebaseAuth.currentUser?.toDomainUser()
+        return firebaseAuth.currentUser?.toDomainUser()
     }
 
-    override suspend fun login(email: String, password: String): Result<User> {
+    override suspend fun login(email: String, password: String): Result<User> { // Removed kotlin. qualifier
         return try {
             val firebaseUser = firebaseAuth.signInWithEmailAndPassword(email, password).await().user
-            firebaseUser?.let { Result.success(it.toDomainUser()) }
-                ?: Result.failure(Exception("User not found"))
+            firebaseUser?.let {
+                Result.success(it.toDomainUser()) // Removed kotlin. qualifier
+            } ?: Result.failure(Exception("User not found or login failed.")) // Removed kotlin. qualifier
         } catch (e: Exception) {
-            Result.failure(e)
-
+            Result.failure(e) // Removed kotlin. qualifier
         }
     }
 
-    override suspend fun registerUser(email: String, password: String): Result<User> {
+    override suspend fun registerUser(email: String, password: String): Result<User> { // Removed kotlin. qualifier
         return try {
-            val userCredential = auth.createUserWithEmailAndPassword(email, password).await()
+            val userCredential = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val firebaseUser = userCredential.user
             if (firebaseUser != null) {
-                // Create a user document in Firestore
                 val user = User(
                     uid = firebaseUser.uid,
                     email = firebaseUser.email ?: "",
@@ -45,34 +41,23 @@ class AuthRepositoryImpl @Inject constructor(
                     status = "pending"
                 )
                 firestore.collection("users").document(firebaseUser.uid).set(user).await()
-                Result.Success(Unit)
+                Result.success(user) // Removed kotlin. qualifier
             } else {
-                Result.Error("User registration failed: user object is null.")
+                Result.failure(Exception("User registration failed: Firebase user object is null.")) // Removed kotlin. qualifier
             }
         } catch (e: Exception) {
-            Result.Error(e.message ?: "An unknown registration error occurred.")
+            Result.failure(e) // Removed kotlin. qualifier
         }
     }
 
-    //registerUser should call createUserWithEmailAndPassword on the firebaseAuth instance
-    // upon successful auth creation, it must also create a new user document in the database with uid, email, role of "user" and status of "pending"
-
-    override suspend fun signup(name: String, email: String, password: String): Result<User> {
-        // Similar logic for signup, map FirebaseUser to domain User upon success
+    override suspend fun signup(name: String, email: String, password: String): Result<User> { // Removed kotlin. qualifier
         return try {
             val firebaseUser = firebaseAuth.createUserWithEmailAndPassword(email, password).await().user
-            // You might want to update the FirebaseUser's display name here as well
-            // For example:
-            // if (firebaseUser != null) {
-            //     val profileUpdates = com.google.firebase.auth.UserProfileChangeRequest.Builder()
-            //         .setDisplayName(name)
-            //         .build()
-            //     firebaseUser.updateProfile(profileUpdates).await()
-            // }
-            firebaseUser?.let { Result.success(it.toDomainUser()) }
-                ?: Result.failure(Exception("Signup failed: Could not create user"))
+            firebaseUser?.let {
+                Result.success(it.toDomainUser()) // Removed kotlin. qualifier
+            } ?: Result.failure(Exception("Signup failed: Could not create user.")) // Removed kotlin. qualifier
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(e) // Removed kotlin. qualifier
         }
     }
 
@@ -80,30 +65,16 @@ class AuthRepositoryImpl @Inject constructor(
         firebaseAuth.signOut()
     }
 
-    //Add GetPendingUsers function here
-
-    //Add ApprovePendingUser function here
-    // Screen should display a list of users where status == "pending"
-    // Each user item should have an Approve button and a Delete button that trigger the respective use cases
-
-    //Add DeleteUser function here
-
+    // Add GetPendingUsers function here
+    // Add ApprovePendingUser function here
+    // Add DeleteUser function here
 }
 
-// Helper extension function to map FirebaseUser to your domain User
-// This can be in the same file or a separate mapper file in the :data layer
-// !!! IMPORTANT: Adjust this function to match the properties of your domain.model.User !!!
 fun FirebaseUser.toDomainUser(): User {
     return User(
-        uid = "String",
-        email = "String",
-         role = "user", // Only include if your domain.model.User has 'role'
-         status = "pending" // Only include if your domain.model.User has 'status'
+        uid = this.uid,
+        email = this.email ?: "",
+        role = "user",
+        status = "pending"
     )
 }
-
-
-//Was here before changes
-//    override fun getCurrentUser: FirebaseUser? {
-//        return auth.currentUser
-//    }

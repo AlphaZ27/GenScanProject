@@ -3,14 +3,16 @@ package com.example.genscanproject.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel // Stays, but needs Gradle dep
-import androidx.navigation.compose.NavHost // Stays, but needs Gradle dep
-import androidx.navigation.compose.composable // Stays, but needs Gradle dep
-import androidx.navigation.compose.rememberNavController // Stays, but needs Gradle dep
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.feature_auth.presentation.LoginScreen
 import com.example.feature_auth.presentation.RegistrationScreen
 import com.example.feature_profile.presentation.ProfileScreen
 import com.example.genscanproject.presentation.PendingApprovalScreen
+import com.example.feature_admin.presentation.AdminDashboardScreen
+import com.example.genscanproject.MainScreen
 import com.example.genscanproject.presentation.SplashScreen
 import com.example.scanner.presentation.ScannerScreen
 import com.example.generator.presentation.GeneratorScreen
@@ -28,10 +30,13 @@ object AppRoutes {
     const val PENDING_APPROVAL = "pending_approval"
     const val GENERATOR = "generator"
     const val SCANNER = "scanner"
+    const val MAIN_HUB = "main_hub"
 }
 
 @Composable
-fun AppNavigation(mainViewModel: MainViewModel = viewModel()) { // MainViewModel should now be resolved
+fun AppNavigation(
+    mainViewModel: MainViewModel = viewModel()
+) { // MainViewModel should now be resolved
     val navController = rememberNavController()
     val authState by mainViewModel.authState.collectAsState() // authState & mainViewModel should be fine
 
@@ -62,6 +67,10 @@ fun AppNavigation(mainViewModel: MainViewModel = viewModel()) { // MainViewModel
             )
         }
 
+        composable(AppRoutes.MAIN_HUB) {
+            MainScreen()
+        }
+
         composable(AppRoutes.PROFILE) {
             ProfileScreen(
                 onLogout = {
@@ -80,6 +89,10 @@ fun AppNavigation(mainViewModel: MainViewModel = viewModel()) { // MainViewModel
         }
         composable(AppRoutes.SCANNER) {
             ScannerScreen()
+        }
+
+        composable(AppRoutes.ADMIN_DASHBOARD) {
+            AdminDashboardScreen()
         }
 
         composable(AppRoutes.ADMIN_DASHBOARD) {
