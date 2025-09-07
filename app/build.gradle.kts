@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
 
     // Hilt Dependencies
     implementation(libs.hilt.android) // Added Hilt runtime
@@ -87,8 +88,12 @@ dependencies {
     // ViewModel with Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose) // Or the latest version
 
+    //Google Play Services ML-kit
+    implementation(libs.mlkit.barcodeScanning) // Changed from direct string
 
-
+    //Camera
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.lifecycle)
 
     //Firestore - Remember to put the dependency versions or they won't work
     //implementation(libs.firebase.bom)

@@ -54,7 +54,7 @@ kotlinxSerialization = "1.7.0"
 #junit = "4.13.2"
 hilt = "2.57.1"
 ksp = "2.0.0-1.0.21"
-mlkitBarcodeScanning = "17.3.0"
+mlkitBarcodeScanning = "24.0.0"
 protobuf = "3.25.2"
 protobufPlugin = "0.9.4"
 mockk = "1.13.10"
@@ -62,6 +62,7 @@ profileinstaller = "1.4.1"
 turbine = "1.1.0"
 uiautomator = "2.3.0"
 zxing = "3.5.3"
+cameraCore = "1.4.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -94,6 +95,9 @@ kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "ko
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+
+#QR Code library Dependencies
+mlkit-barcodeScanning = { module = "com.google.android.gms:play-services-mlkit-barcode-scanning", version.ref = "mlkitBarcodeScanning" }
 
 #QR Code library Dependencies
 #androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
@@ -147,7 +151,6 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 #kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 #kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 #kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
-mlkit-barcodescanning = { group = "com.google.mlkit", name = "barcode-scanning", version.ref = "mlkitBarcodeScanning" }
 #mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 #mockk-agent = { group = "io.mockk", name = "mockk-agent", version.ref = "mockk" }
 #protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
@@ -155,6 +158,8 @@ mlkit-barcodescanning = { group = "com.google.mlkit", name = "barcode-scanning",
 #protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 #turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 zxing = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
+#play-services-mlkit-barcode-scanning = { group = "com.google.android.gms", name = "play-services-mlkit-barcode-scanning", version.ref = "playServicesMlkitBarcodeScanning" }
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
 
 
 [plugins]
