@@ -43,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     kotlinter {
         ignoreFailures = false
@@ -59,8 +60,7 @@ dependencies {
     implementation(project(":app:feature_generator"))
     implementation(project(":app:feature_profile"))
     implementation(project(":app:history"))
-    implementation(project(":qrcodecomposelib"))
-    implementation(project(":qrcodecomposelibmlkit"))
+
     //UI and Business logic modules
     implementation(project(":app:common"))
     implementation(project(":app:domain"))
@@ -89,11 +89,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose) // Or the latest version
 
     //Google Play Services ML-kit
-    implementation(libs.mlkit.barcodeScanning) // Changed from direct string
+    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")
 
     //Camera
-    implementation(libs.androidx.camera.core)
-    implementation(libs.androidx.camera.lifecycle)
+    val cameraxVersion = "1.3.1"
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+    implementation("androidx.camera:camera-view:${cameraxVersion}")
+    implementation("androidx.camera:camera-extensions:${cameraxVersion}")
 
     //Firestore - Remember to put the dependency versions or they won't work
     //implementation(libs.firebase.bom)

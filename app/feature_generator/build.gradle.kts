@@ -40,7 +40,7 @@ dependencies {
     //UI and Business logic modules
     implementation(project(":app:common"))
     implementation(project(":app:domain"))
-    implementation(project(":qrcodecomposelib"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -47,8 +47,7 @@ dependencies {
     implementation(project(":app:domain"))
     implementation(project(":app:di"))
 
-    implementation(project(":qrcodecomposelib"))
-    implementation(project(":qrcodecomposelibmlkit"))
+
 
     //Hilt
     implementation(libs.hilt.android)

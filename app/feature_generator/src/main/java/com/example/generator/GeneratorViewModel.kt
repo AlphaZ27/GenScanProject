@@ -2,12 +2,11 @@ package com.example.generator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.data.repository.FirestoreRepository
-import com.example.core.data.models.ScanResult
-
-import com.example.core.data.repository.AuthRepository
-import com.example.core.data.repository.QrCodeRepository
-import com.example.core.domain.model.QrCode
+import com.example.data.repository.FirestoreRepository
+import com.example.domain.util.Result as ScanResult
+import com.example.domain.repository.AuthRepository
+import com.example.domain.repository.QrCodeRepository
+import com.example.domain.model.QrCode
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
