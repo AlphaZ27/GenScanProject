@@ -13,18 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.genscanproject.navigation.AppNavigation
 import com.example.genscanproject.ui.theme.GenScanProjectTheme
+import dagger.hilt.android.AndroidEntryPoint // Import Hilt's AndroidEntryPoint
 
+
+@AndroidEntryPoint // Annotation for Hilt
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             GenScanProjectTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-                    AppNavigation()
-
-                }
+                // Scaffold is not needed here, AppNavigation will manage its own
+                AppNavigation()
             }
         }
     }

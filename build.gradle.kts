@@ -6,4 +6,7 @@ plugins {
     //Firestore dependency
     id("com.google.gms.google-services") version "4.4.3" apply false
     alias(libs.plugins.android.library) apply false
+    // Hilt dependency
+    id("com.google.dagger.hilt.android") version "2.57.1" apply false
+    id("org.jetbrains.kotlin.kapt") version "2.2.10" apply false
 }

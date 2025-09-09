@@ -11,16 +11,16 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/app/common" />
-            <option value="$PROJECT_DIR$/app/data" />
-            <option value="$PROJECT_DIR$/app/di" />
-            <option value="$PROJECT_DIR$/app/domain" />
-            <option value="$PROJECT_DIR$/app/feature_admin" />
-            <option value="$PROJECT_DIR$/app/feature_auth" />
-            <option value="$PROJECT_DIR$/app/feature_generator" />
-            <option value="$PROJECT_DIR$/app/feature_profile" />
-            <option value="$PROJECT_DIR$/app/feature_scanner" />
-            <option value="$PROJECT_DIR$/app/history" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/di" />
+            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/feature_admin" />
+            <option value="$PROJECT_DIR$/feature_auth" />
+            <option value="$PROJECT_DIR$/feature_generator" />
+            <option value="$PROJECT_DIR$/feature_profile" />
+            <option value="$PROJECT_DIR$/feature_scanner" />
+            <option value="$PROJECT_DIR$/history" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.gms.google.services) //Google Services plugins
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.hilt) // Added Hilt plugin
     kotlin("kapt")           // Added Kapt for Hilt
@@ -31,41 +31,54 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 //    kotlinOptions { // no long works
 //        jvmTarget = "11"
 //    }
+
     kotlin {
-        jvmToolchain(11) // This is the modern way
+        jvmToolchain(18) // This is the modern way
     }
+
     buildFeatures {
         compose = true
         viewBinding = true
     }
+
     kotlinter {
         ignoreFailures = false
         reporters = arrayOf("plain")
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.8"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
 dependencies {
 
     //Project Module Dependencies
-    implementation(project(":app:feature_auth"))
-    implementation(project(":app:feature_admin"))
-    implementation(project(":app:feature_scanner"))
-    implementation(project(":app:feature_generator"))
-    implementation(project(":app:feature_profile"))
-    implementation(project(":app:history"))
+    implementation(project(":feature_auth"))
+    implementation(project(":feature_admin"))
+    implementation(project(":feature_scanner"))
+    implementation(project(":feature_generator"))
+    implementation(project(":feature_profile"))
+    implementation(project(":history"))
 
     //UI and Business logic modules
-    implementation(project(":app:common"))
-    implementation(project(":app:domain"))
-    implementation(project(":app:data"))
-    implementation(project(":app:di"))
+    implementation(project(":common"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":di"))
 
     //Androidx and Compose
     implementation(libs.androidx.core.ktx)
@@ -81,18 +94,23 @@ dependencies {
     // Hilt Dependencies
     implementation(libs.hilt.android) // Added Hilt runtime
     kapt(libs.hilt.compiler)          // Added Hilt compiler
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
 
     //Navigation
     // Jetpack Compose Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7") // Or the latest version
+    implementation("androidx.navigation:navigation-compose:2.9.3") // Or the latest version
     // ViewModel with Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose) // Or the latest version
 
     //Google Play Services ML-kit
-    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")
+    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.1")
+
+    // Accompanist (for permissions)
+    implementation("com.google.accompanist:accompanist-permissions:0.37.3")
 
     //Camera
-    val cameraxVersion = "1.3.1"
+    val cameraxVersion = "1.4.2"
     implementation("androidx.camera:camera-core:${cameraxVersion}")
     implementation("androidx.camera:camera-camera2:${cameraxVersion}")
     implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
@@ -100,11 +118,15 @@ dependencies {
     implementation("androidx.camera:camera-extensions:${cameraxVersion}")
 
     //Firestore - Remember to put the dependency versions or they won't work
+    implementation(platform(libs.firebase.bom))
+    // Now declare other Firebase libraries without versions
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     //implementation(libs.firebase.bom)
     //implementation(libs.firebase.analytics)
     //Firebase Common library
     //implementation(libs.firebase.common.ktx)
-    //implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.firestore.ktx)
     //implementation(libs.firebase.auth.ktx)
 
 

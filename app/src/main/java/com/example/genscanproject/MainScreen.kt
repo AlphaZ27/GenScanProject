@@ -15,43 +15,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.generator.presentation.GeneratorScreen
 import com.example.feature_profile.presentation.ProfileScreen
 import com.example.scanner.presentation.ScannerScreen
-import com.example.history.presentation.HistoryScreen // Added import for HistoryScreen
+import com.example.history.HistoryScreen // Added import for HistoryScreen
 import com.example.genscanproject.navigation.BottomNavItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(onLogout: () -> Unit) {
+
     val navController = rememberNavController()
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-                val items = listOf(
-                    BottomNavItem.Scanner,
-                    BottomNavItem.Generator,
-                    BottomNavItem.History, // Added History to the list
-                    BottomNavItem.Profile
-                )
-                items.forEach { item ->
-                    NavigationBarItem(
-                        icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
-                        label = { Text(text = item.title) },
-                        alwaysShowLabel = true,
-                        selected = currentRoute == item.route,
-                        onClick = {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    )
-                }
-            }
+            // ... your NavigationBar code is correct
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
@@ -61,36 +36,10 @@ fun MainScreen() {
             ) {
                 composable(BottomNavItem.Scanner.route) { ScannerScreen() }
                 composable(BottomNavItem.Generator.route) { GeneratorScreen() }
-                composable(BottomNavItem.History.route) { HistoryScreen() } // Added route for History
+                composable(BottomNavItem.History.route) { HistoryScreen() }
                 composable(BottomNavItem.Profile.route) {
-                    ProfileScreen(
-                        onLogout = {
-                            navController.navigate(BottomNavItem.Scanner.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    inclusive = true
-                                }
-                                launchSingleTop = true
-                            }
-                        },
-                        onNavigateToScanner = {
-                            navController.navigate(BottomNavItem.Scanner.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        onNavigateToGenerator = {
-                            navController.navigate(BottomNavItem.Generator.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    )
+                    // ⬇️ PASS THE onLogout LAMBDA DOWN TO THE PROFILE SCREEN
+                    ProfileScreen(onLoggedOut = onLogout)
                 }
             }
         }
@@ -100,5 +49,5 @@ fun MainScreen() {
 @Preview
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+    MainScreen(onLogout = {})
 }

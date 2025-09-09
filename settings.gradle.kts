@@ -7,12 +7,13 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
 }
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -25,15 +26,15 @@ dependencyResolutionManagement {
 rootProject.name = "GenScanProject"
 //Core Layers
 include(":app")
-include(":app:common") //Shared UI components, resources, utilities
-include(":app:data")    //Data layer - repositories, local/remote data sources
-include(":app:domain")  //Domain layer - business logic, entities, use cases
-include(":app:di")      //All Hilt dependencies - clean and centralised graph
+include(":common") //Shared UI components, resources, utilities
+include(":data")    //Data layer - repositories, local/remote data sources
+include(":domain")  //Domain layer - business logic, entities, use cases
+include(":di")      //All Hilt dependencies - clean and centralised graph
 //Feature Modules
-include(":app:feature_scanner")
-include(":app:feature_generator")
-include(":app:history")
-include(":app:feature_auth")
-include(":app:feature_profile")
-include(":app:feature_admin")
+include(":feature_scanner")
+include(":feature_generator")
+include(":history")
+include(":feature_auth")
+include(":feature_profile")
+include(":feature_admin")
 

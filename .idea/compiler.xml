@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="GenScanProject.app.feature_profile" target="21" />
       <module name="GenScanProject.qrcodecomposelibmlkit" target="21" />
     </bytecodeTargetLevel>
   </component>

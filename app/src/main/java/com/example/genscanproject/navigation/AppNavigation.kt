@@ -3,7 +3,7 @@ package com.example.genscanproject.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel // USE THE HILT IMPORT
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -22,135 +22,83 @@ import com.example.genscanproject.presentation.UserAuthState
 
 // Defines the routes for navigation
 object AppRoutes {
-    const val SPLASH = "splash"
     const val LOGIN = "login"
     const val REGISTRATION = "registration"
-    const val PROFILE = "profile"
-    const val ADMIN_DASHBOARD = "admin_dashboard"
+    const val MAIN_HUB = "main_hub" // This is where approved users go after login
     const val PENDING_APPROVAL = "pending_approval"
-    const val GENERATOR = "generator"
-    const val SCANNER = "scanner"
-    const val MAIN_HUB = "main_hub"
+    // We can simplify and remove others from here as they'll be part of the main hub's navigation
 }
 
 @Composable
 fun AppNavigation(
-    mainViewModel: MainViewModel = viewModel()
-) { // MainViewModel should now be resolved
-    val navController = rememberNavController()
-    val authState by mainViewModel.authState.collectAsState() // authState & mainViewModel should be fine
+    mainViewModel: MainViewModel = hiltViewModel() //  GET THE VIEWMODEL WITH HILT
+) {
 
-    NavHost(navController = navController, startDestination = AppRoutes.SPLASH) {
-        composable(AppRoutes.SPLASH) {
-            SplashScreen()
+    val navController = rememberNavController()
+    val authState by mainViewModel.authState.collectAsState()
+
+    // This determines the starting point of the app based on auth state
+    // It prevents the screen from flashing between states
+    val startDestination = when (authState) {
+        is UserAuthState.Authenticated -> {
+            val user = (authState as UserAuthState.Authenticated).user
+            when {
+                // For now, let's send both admin and approved users to the main hub
+                user.status == "approved" || user.role == "admin" -> AppRoutes.MAIN_HUB
+                else -> AppRoutes.PENDING_APPROVAL
+            }
+        }
+        is UserAuthState.Unauthenticated -> AppRoutes.LOGIN
+        is UserAuthState.Loading -> "splash" // Show a temporary splash/loading route
+    }
+
+
+    NavHost(navController = navController, startDestination = startDestination) {
+        composable("splash") {
+            // You can use your SplashScreen here
         }
 
         composable(AppRoutes.LOGIN) {
             LoginScreen(
                 onLoginSuccess = {
-                    val latestState = mainViewModel.authState.value
-                    if (latestState is UserAuthState.Authenticated) { // UserAuthState should be resolved
-                        val user = latestState.user // user.role and user.status will depend on your com.example.domain.model.User
-                        val route = when {
-                            user.role == "admin" -> AppRoutes.ADMIN_DASHBOARD
-                            user.status == "approved" -> AppRoutes.PROFILE
-                            else -> AppRoutes.PENDING_APPROVAL
-                        }
-                        navController.navigate(route) {
-                            popUpTo(AppRoutes.LOGIN) { inclusive = true }
-                        }
+                    // After login, the authState will change, and the NavHost will automatically
+                    // navigate to the correct startDestination (MAIN_HUB or PENDING_APPROVAL).
+                    // We just need to pop the login screen off the back stack.
+                    navController.navigate(startDestination) {
+                        popUpTo(AppRoutes.LOGIN) { inclusive = true }
                     }
                 },
-                onNavigateToRegistration = {
+                onNavigateToRegister = {
                     navController.navigate(AppRoutes.REGISTRATION)
                 }
             )
         }
 
-        composable(AppRoutes.MAIN_HUB) {
-            MainScreen()
-        }
-
-        composable(AppRoutes.PROFILE) {
-            ProfileScreen(
-                onLogout = {
-                    mainViewModel.logout() // logout should be resolved
-                    navController.navigate(AppRoutes.LOGIN) {
-                        popUpTo(AppRoutes.PROFILE) { inclusive = true }
-                    }
-                },
-                onNavigateToScanner = { navController.navigate(AppRoutes.SCANNER) },
-                onNavigateToGenerator = { navController.navigate(AppRoutes.GENERATOR) }
-            )
-        }
-
-        composable(AppRoutes.GENERATOR) {
-            GeneratorScreen()
-        }
-        composable(AppRoutes.SCANNER) {
-            ScannerScreen()
-        }
-
-        composable(AppRoutes.ADMIN_DASHBOARD) {
-            AdminDashboardScreen()
-        }
-
-        composable(AppRoutes.ADMIN_DASHBOARD) {
-            // Updated ProfileScreen call for admin
-            ProfileScreen(
-                onLogout = {
-                    mainViewModel.logout()
-                    navController.navigate(AppRoutes.LOGIN) {
-                        popUpTo(AppRoutes.ADMIN_DASHBOARD) { inclusive = true }
-                    }
-                },
-                // Admins can also navigate to scanner/generator
-                onNavigateToScanner = { navController.navigate(AppRoutes.SCANNER) },
-                onNavigateToGenerator = { navController.navigate(AppRoutes.GENERATOR) }
-            )
-        }
-
         composable(AppRoutes.REGISTRATION) {
-            RegistrationScreen(onRegistrationSuccess = {
-                navController.navigate(AppRoutes.PENDING_APPROVAL) {
-                    popUpTo(AppRoutes.LOGIN) { inclusive = true }
+            RegistrationScreen(
+                onRegisterSuccess = {
+                    navController.navigate(AppRoutes.PENDING_APPROVAL) {
+                        popUpTo(AppRoutes.LOGIN) { inclusive = true }
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.popBackStack()
                 }
+            )
+        }
+
+        composable(AppRoutes.MAIN_HUB) {
+            // The MainScreen contains its own bottom navigation for Scanner, Generator, etc.
+            MainScreen(onLogout = {
+                mainViewModel.logout()
+                // The authState change will automatically navigate back to the Login screen.
             })
         }
 
         composable(AppRoutes.PENDING_APPROVAL) {
             PendingApprovalScreen(onLogout = {
-                mainViewModel.logout() // Added logout here for consistency
-                navController.navigate(AppRoutes.LOGIN) {
-                    popUpTo(AppRoutes.PENDING_APPROVAL) { inclusive = true }
-                }
+                mainViewModel.logout()
             })
-        }
-    }
-
-    when (val state = authState) { // authState & UserAuthState should be fine
-        is UserAuthState.Authenticated -> {
-            val startRoute = when {
-                state.user.role == "admin" -> AppRoutes.ADMIN_DASHBOARD
-                state.user.status == "approved" -> AppRoutes.PROFILE
-                else -> AppRoutes.PENDING_APPROVAL
-            }
-            navController.navigate(startRoute) {
-                popUpTo(AppRoutes.SPLASH) { inclusive = true }
-            }
-        }
-        is UserAuthState.Unauthenticated -> {
-            navController.navigate(AppRoutes.LOGIN) {
-                popUpTo(AppRoutes.SPLASH) { inclusive = true }
-            }
-        }
-        is UserAuthState.Loading -> {
-            // Splash screen is shown
-        }
-        is UserAuthState.AuthError -> {
-            navController.navigate(AppRoutes.LOGIN) { // Or show error on splash
-                popUpTo(AppRoutes.SPLASH) { inclusive = true }
-            }
         }
     }
 }

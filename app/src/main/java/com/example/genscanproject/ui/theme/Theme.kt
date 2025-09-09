@@ -25,15 +25,15 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     PrimaryBlue.also { primary = it },
-    var onPrimary = Color.White,
-    var secondary = DarkBlue,
-    var tertiary = AccentGreen,
-    var background = BackgroundGray,
-    var surface = SurfaceGray,
-    var onBackground = TextPrimary,
-    var onSurface = TextPrimary,
-    var error = ErrorRed,
-    var onError = Color.White
+    //var onPrimary = Color.White,
+    //var secondary = DarkBlue,
+    //var tertiary = AccentGreen,
+    //var background = BackgroundGray,
+    //var surface = SurfaceGray,
+    //var onBackground = TextPrimary,
+    //var onSurface = TextPrimary,
+    //var error = ErrorRed,
+    //var onError = Color.White
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
