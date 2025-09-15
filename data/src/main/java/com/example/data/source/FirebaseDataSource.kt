@@ -2,6 +2,7 @@ package com.example.data.source
 
 import com.example.domain.model.QrCode
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.data.model.FirestoreQrCode
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.toObjects // Keep KTX import
@@ -20,6 +21,8 @@ class FirebaseDataSource @Inject constructor( // ADDED @Inject
 
     suspend fun saveQrCode(qrCode: QrCode) {
         qrCodesCollection.add(qrCode).await() //Add the import for await
+        // Accept a FirestoreQrCode object and convert it to a QrCode object
+
     }
 
     fun getQrCodesForUser(userId: String): Flow<List<QrCode>> = callbackFlow {

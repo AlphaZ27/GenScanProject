@@ -33,15 +33,15 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 //    kotlinOptions { // no long works
 //        jvmTarget = "11"
 //    }
 
     kotlin {
-        jvmToolchain(18) // This is the modern way
+        jvmToolchain(17) // This is the modern way
     }
 
     buildFeatures {
@@ -118,7 +118,10 @@ dependencies {
     implementation("androidx.camera:camera-extensions:${cameraxVersion}")
 
     //Firestore - Remember to put the dependency versions or they won't work
-    implementation(platform(libs.firebase.bom))
+    //firestore
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation("com.google.firebase:firebase-firestore-ktx") // Changed to direct string
+    implementation("com.google.firebase:firebase-auth-ktx")
     // Now declare other Firebase libraries without versions
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
@@ -126,7 +129,7 @@ dependencies {
     //implementation(libs.firebase.analytics)
     //Firebase Common library
     //implementation(libs.firebase.common.ktx)
-    implementation(libs.firebase.firestore.ktx)
+    //implementation(libs.firebase.firestore.ktx)
     //implementation(libs.firebase.auth.ktx)
 
 

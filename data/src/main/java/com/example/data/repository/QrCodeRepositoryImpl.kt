@@ -2,6 +2,7 @@ package com.example.data.repository
 
 import com.example.data.source.FirebaseDataSource
 import com.example.domain.model.QrCode
+import com.example.data.model.FirestoreQrCode
 import com.example.domain.repository.QrCodeRepository
 import com.example.domain.util.Result
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,13 @@ class QrCodeRepositoryImpl @Inject constructor(
 
     override suspend fun saveQrCode(qrCode: QrCode): Result<Unit> {
         return try {
-            firebaseDataSource.saveQrCode(qrCode) // Assuming this is a suspend function or handles its own threading
+            // Convert the domain model to the Firestore-specific model before saving.
+            val firestoreQrCode = FirestoreQrCode(
+                userId = qrCode.userId,
+                value = qrCode.value,
+                type = qrCode.type
+            )
+            firebaseDataSource.saveQrCode(firestoreQrCode) // Pass the new object
             Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error(e.message ?: "Failed to save QR code.")

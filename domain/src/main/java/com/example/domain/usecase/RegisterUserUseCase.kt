@@ -1,26 +1,16 @@
 package com.example.domain.usecase
 
 import com.example.domain.repository.AuthRepository
-import com.example.domain.util.Result // Your custom Result
+import com.example.domain.util.Result // My custom Result
 import com.example.domain.model.User
 import javax.inject.Inject
 
 class RegisterUserUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
+    // The 'invoke' operator allows you to call the class instance as a function.
+    // Function calls the repository to register the user and returns the result.
     suspend operator fun invoke(email: String, password: String): Result<User> {
-        // Assuming repository.registerUser returns kotlin.Result<User>
-        val kotlinResult = repository.registerUser(email, password)
-
-        // Map kotlin.Result to com.example.domain.util.Result
-        return kotlinResult.fold(
-            onSuccess = { user ->
-                Result.Success(user) // Your custom Success type
-            },
-            onFailure = { throwable ->
-                // Your custom Error type, using the exception's message
-                Result.Error(throwable.message ?: "An unknown error occurred")
-            }
-        )
+        return repository.registerUser(email, password)
     }
 }

@@ -2,7 +2,7 @@ package com.example.data.repository
 
 import com.example.domain.model.User
 import com.example.domain.repository.AuthRepository
-// com.example.domain.util.Result import is no longer needed as we're using kotlin.Result
+import com.example.domain.util.Result
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,18 +18,18 @@ class AuthRepositoryImpl @Inject constructor(
         return firebaseAuth.currentUser?.toDomainUser()
     }
 
-    override suspend fun login(email: String, password: String): Result<User> { // Removed kotlin. qualifier
+    override suspend fun login(email: String, password: String): Result<User> {
         return try {
             val firebaseUser = firebaseAuth.signInWithEmailAndPassword(email, password).await().user
             firebaseUser?.let {
-                Result.success(it.toDomainUser()) // Removed kotlin. qualifier
-            } ?: Result.failure(Exception("User not found or login failed.")) // Removed kotlin. qualifier
+                Result.Success(it.toDomainUser()) // Return Result.Success
+            } ?: Result.Error("User not found or login failed.") // Return Result.Error
         } catch (e: Exception) {
-            Result.failure(e) // Removed kotlin. qualifier
+            Result.Error(e.message ?: "An unknown error occurred.")
         }
     }
 
-    override suspend fun registerUser(email: String, password: String): Result<User> { // Removed kotlin. qualifier
+    override suspend fun registerUser(email: String, password: String): Result<User> {
         return try {
             val userCredential = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val firebaseUser = userCredential.user
@@ -41,24 +41,17 @@ class AuthRepositoryImpl @Inject constructor(
                     status = "pending"
                 )
                 firestore.collection("users").document(firebaseUser.uid).set(user).await()
-                Result.success(user) // Removed kotlin. qualifier
+                Result.Success(user)
             } else {
-                Result.failure(Exception("User registration failed: Firebase user object is null.")) // Removed kotlin. qualifier
+                Result.Error("User registration failed: Firebase user object is null.")
             }
         } catch (e: Exception) {
-            Result.failure(e) // Removed kotlin. qualifier
+            Result.Error(e.message ?: "An unknown error occurred.")
         }
     }
 
     override suspend fun signup(name: String, email: String, password: String): Result<User> { // Removed kotlin. qualifier
-        return try {
-            val firebaseUser = firebaseAuth.createUserWithEmailAndPassword(email, password).await().user
-            firebaseUser?.let {
-                Result.success(it.toDomainUser()) // Removed kotlin. qualifier
-            } ?: Result.failure(Exception("Signup failed: Could not create user.")) // Removed kotlin. qualifier
-        } catch (e: Exception) {
-            Result.failure(e) // Removed kotlin. qualifier
-        }
+        return registerUser(email, password)
     }
 
     override fun logout() {
@@ -71,7 +64,7 @@ fun FirebaseUser.toDomainUser(): User {
     return User(
         uid = this.uid,
         email = this.email ?: "",
-        role = "user",
-        status = "pending"
+        role = "user", //Default role
+        status = "pending" //Default status
     )
 }

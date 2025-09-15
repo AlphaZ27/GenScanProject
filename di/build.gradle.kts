@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     id("kotlin-kapt")
+
 }
 
 android {
@@ -26,27 +27,31 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 kotlin {
-    jvmToolchain(11) // This is the modern way
+    jvmToolchain(17) // This is the modern way
 }
 
 dependencies {
-
-    //Needs data and domain
-    implementation(project(":data"))
-    implementation(project(":domain"))
-
-    //Hilt
+    // Hilt for Dependency Injection
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.firestore.ktx)
+    // Firebase Authentication for user management
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+
+    //Needed Modules
+    implementation(project(":common"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
+    // Test dependencies (optional, but good practice)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

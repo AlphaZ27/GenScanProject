@@ -1,6 +1,5 @@
 [versions]
 agp = "8.13.0"
-firebaseAuth = "24.0.1"
 kotlin = "2.2.10"
 kotlinxCoroutines = "1.10.2"
 kotlinter = "4.2.0"  #5.2.0 does not work with kotlinter {...} in app build.gradle.kts
@@ -9,27 +8,25 @@ junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.9.3"
-activityCompose = "1.10.1"
-composeBom = "2025.08.01"
-composeMaterial = "1.5.0"
+activityCompose = "1.11.0"
+composeBom = "2025.09.00"
+composeMaterial = "1.5.1"
 googleGmsGoogleServices = "4.4.3"
 firebaseAnalytics = "23.0.0"
 firebaseBom = "34.2.0" # Added for Firebase BOM
 firebaseFirestore = "25.1.4" # Updated version
 firebaseAuthKtx = "23.2.1"   # Updated version
 firebaseCommonKtx = "21.0.0" # Added version
+firebaseAuth = "24.0.1"
 appcompat = "1.7.1"
 material = "1.13.0"
-runtime = "1.9.0"
+runtime = "1.9.1"
 
 #QR Code library Dependencies
 androidGradlePlugin = "8.13.0"
-#androidxActivityCompose = "1.9.3"
-#androidxAppcompat = "1.7.0"
 androidxBrowser = "1.9.0"
-#androidxComposeBom = "2024.11.00"
-#androidxComposeMaterial3Adaptive = "1.0.0"
-#androidXConstraintLayoutCompose = "1.1.0"
+androidxComposeMaterial3Adaptive = "1.0.0"
+androidXConstraintLayoutCompose = "1.1.0"
 androidxCore = "1.15.0"
 androidxCameraX = "1.4.2"
 androidxCoreSplashscreen = "1.0.1"
@@ -37,20 +34,8 @@ androidxDataStore = "1.1.1"
 androidxHiltNavigationCompose = "1.2.0"
 androidxLifecycle = "2.8.7"
 androidxNavigation = "2.8.4"
-androidxRoom = "2.6.1"
 androidxTestExtJunit = "1.3.0"
-androidxTestMonitor = "1.7.2"
-arrowKt = "1.2.4"
-baselineprofile = "1.3.3"
-benchmarkMacroJunit4 = "1.3.3"
-desugaring = "2.1.3"
-#espressoCore = "3.6.1"
 googleAccompanist = "0.37.3"
-#kotlin = "2.0.0"
-#kotlinter = "4.2.0"
-# kotlinxCoroutines version below is more recent and likely preferred for QR Code libs, original above is older.
-# You might want to consolidate these if they refer to the same set of coroutines libraries.
-#kotlinxCoroutines = "1.8.0" # This was a duplicate, I'm keeping the more recent one. The original "1.6.4" is now effectively overridden for subsequent aliases if they use this ref.
 kotlinxSerialization = "1.7.0"
 #junit = "4.13.2"
 hilt = "2.57.1"
@@ -104,46 +89,23 @@ androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", versi
 mlkit-barcodeScanning = { module = "com.google.android.gms:play-services-mlkit-barcode-scanning", version.ref = "mlkitBarcodeScanning" }
 
 #QR Code library Dependencies
-#androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
-#androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
-#androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
 androidx-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "androidxCameraX" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "androidxCameraX" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "androidxCameraX" }
-#androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 #androidx-contraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidXConstraintLayoutCompose" }
 
 # region Compose BOM and associated dependencies
-#androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
-#animation = { group = "androidx.compose.animation", name = "animation" }
 foundation = { group = "androidx.compose.foundation", name = "foundation" }
 foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
 ui = { group = "androidx.compose.ui", name = "ui" }
-#ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-#ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-#ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-#material3 = { group = "androidx.compose.material3", name = "material3" }
-#material3-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "androidxComposeMaterial3Adaptive" }
-#material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
 
-# endregion Compose BOM and associated dependencies
-#androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
-#androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
-#androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
-#androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
-#androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
-androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
-#androidx-test-monitor = { group = "androidx.test", name = "monitor", version.ref="androidxTestMonitor" }
-#androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
-#arrow-optics = { group = "io.arrow-kt", name = "arrow-optics", version.ref = "arrowKt" }
-#arrow-optics-ksp = { group = "io.arrow-kt", name = "arrow-optics-ksp-plugin", version.ref = "arrowKt" }
-#desugaring-jdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugaring" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+
 google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "googleAccompanist" }
 
 #Hilt
@@ -151,16 +113,7 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
-#junit = { group = "junit", name = "junit", version.ref = "junit" }
-#kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
-#kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-#kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
-#mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
-#mockk-agent = { group = "io.mockk", name = "mockk-agent", version.ref = "mockk" }
-#protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
-# IDE mentions protoc is not used, but it is, check app's build.gradle.kts, protobuf section
-#protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
-#turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+
 zxing = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
 #play-services-mlkit-barcode-scanning = { group = "com.google.android.gms", name = "play-services-mlkit-barcode-scanning", version.ref = "playServicesMlkitBarcodeScanning" }
 androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
