@@ -119,7 +119,7 @@ dependencies {
 
     //Firestore - Remember to put the dependency versions or they won't work
     //firestore
-    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-firestore-ktx") // Changed to direct string
     implementation("com.google.firebase:firebase-auth-ktx")
     // Now declare other Firebase libraries without versions
